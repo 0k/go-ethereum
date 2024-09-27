@@ -321,13 +321,10 @@ type TxByPriceAndTime Transactions
 
 func (s TxByPriceAndTime) Len() int { return len(s) }
 func (s TxByPriceAndTime) Less(i, j int) bool {
-	// If the prices are equal, use the time the transaction was first seen for
-	// deterministic sorting
-	cmp := s[i].data.Price.Cmp(s[j].data.Price)
-	if cmp == 0 {
-		return s[i].time.Before(s[j].time)
-	}
-	return cmp > 0
+	// XXXvlab: comchain's mod. As the nodes are entirely private,
+	// we do not want to sort by Price but only by time to fix
+	// problem with unwanted re-ordering of transaction
+	return s[i].time.Before(s[j].time)
 }
 func (s TxByPriceAndTime) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 
